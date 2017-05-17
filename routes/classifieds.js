@@ -80,27 +80,27 @@ router.patch('/:id', (req, res, next) => {
     })
 })
 
-// router.delete('/:id', (req, res, next) => {
-//   let id = req.params.id;
-//
-//   if (isNaN(parseInt(id))) {
-//     notFound(res);
-//     return;
-//   }
-//
-//   knex('classifieds')
-//     .returning(['id', 'name', 'message'])
-//     .where('id', id)
-//     .del()
-//     .then(messages => {
-//       if (messages.length === 0) {
-//         notFound(res);
-//       }
-//       else {
-//         res.setHeader('Content-Type', 'application/json')
-//         res.status(200);
-//         res.send(messages[0]);
-//       }
-//     })
+router.delete('/:id', (req, res, next) => {
+  let id = req.params.id;
 
+  if (isNaN(parseInt(id))) {
+    notFound(res);
+    return;
+  }
+
+  knex('classifieds')
+    .returning(['id','title', 'description', 'price', 'item_image'])
+    .where('id', id)
+    .del()
+    .then(ad => {
+      if (ad.length === 0) {
+        notFound(res);
+      }
+      else {
+        res.setHeader('Content-Type', 'application/json')
+        res.status(200);
+        res.send(ad[0]);
+      }
+    })
+})
 module.exports = router;
