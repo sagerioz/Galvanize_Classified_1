@@ -35,49 +35,51 @@ router.get('/:id', (req, res, next) => {
       res.send(ad[0]);
     })
 })
-//
-// router.post('/', (req, res, next) => {
-//   let newMessage = req.body;
-//
-//   knex('classifieds')
-//     .insert({
-//       name: newMessage.name,
-//       message: newMessage.message
-//     }, ['name', 'message'])
-//     .then((messages) => {
-//       res.setHeader('Content-Type', 'application/json')
-//       res.status(200);
-//       res.send(messages[0]);
-//     })
-// })
-//
-// router.patch('/:id', (req, res, next) => {
-//   let id = req.params.id;
-//   let body = req.body;
-//
-//   knex('classifieds')
-//     .where('id', id)
-//     .then((messages) => {
-//       if (messages.length === 0) {
-//         notFound(res);
-//       }
-//       else {
-//         knex('messages')
-//           .returning(['id', 'name', 'message'])
-//           .where('id', id)
-//           .update({
-//             name: body.name,
-//             message: body.message
-//           })
-//           .then(messages => {
-//             res.setHeader('Content-Type', 'application/json')
-//             res.status(200);
-//             res.send(messages[0]);
-//           })
-//       }
-//     })
-// })
-//
+
+router.post('/', (req, res, next) => {
+
+  knex('classifieds')
+    .insert({
+      title: req.body.title,
+      description: req.body.description,
+      price: req.body.price,
+      item_image: req.body.item_image
+    }, ['id','title', 'description', 'price', 'item_image'])
+    .then((newPost) => {
+      res.setHeader('Content-Type', 'application/json')
+      res.status(200);
+      res.send(newPost[0]);
+    })
+})
+
+router.patch('/:id', (req, res, next) => {
+  let id = req.params.id;
+
+  knex('classifieds')
+    .where('id', id)
+    .then((ad) => {
+      if (ad.length === 0) {
+        notFound(res);
+      }
+      else {
+        knex('classifieds')
+          .returning(['id','title', 'description', 'price', 'item_image'])
+          .where('id', id)
+          .update({
+            title: req.body.title,
+            description: req.body.description,
+            price: req.body.price,
+            item_image: req.body.item_image
+          })
+          .then(ad => {
+            res.setHeader('Content-Type', 'application/json')
+            res.status(200);
+            res.send(ad[0]);
+          })
+      }
+    })
+})
+
 // router.delete('/:id', (req, res, next) => {
 //   let id = req.params.id;
 //
