@@ -23,18 +23,18 @@ router.get('/', (req, res, next) => {
     })
 })
 
-// router.get('/:id', (req, res, next) => {
-//   let id = req.params.id;
-//
-//   knex('classifieds')
-//     .where('id', id)
-//     .select(['id', 'name', 'message'])
-//     .then((messages) => {
-//       res.setHeader('Content-Type', 'application/json')
-//       res.status(200);
-//       res.send(messages[0]);
-//     })
-// })
+router.get('/:id', (req, res, next) => {
+  let id = req.params.id;
+
+  knex('classifieds')
+    .where('id', id)
+    .select(['id', 'title', 'description', 'price', 'item_image'])
+    .then((ad) => {
+      res.setHeader('Content-Type', 'application/json')
+      res.status(200);
+      res.send(ad[0]);
+    })
+})
 //
 // router.post('/', (req, res, next) => {
 //   let newMessage = req.body;
